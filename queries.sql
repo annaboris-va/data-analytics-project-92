@@ -40,7 +40,7 @@ where floor (income/operations) < (select avg (income/operations) from tab)
 order by average_income ASC
 ;
 
---Третий отчет Третий отчет содержит информацию о выручке по дням недели для каждого продавца. 
+--Третий отчет содержит информацию о выручке по дням недели для каждого продавца. 
 select
 	concat (e.first_name, ' ', e.last_name) as seller, --имя и фамилия продавца
 	to_char (s.sale_date, 'Day') as day_of_week, --день недели
