@@ -86,26 +86,26 @@ order by selling_month asc
 
 --Третий отчет содержит информацию о покупателях, первая покупка которых была в ходе проведения акций. 
 with tab as (
-select 
-	s.customer_id,
-	concat (c.first_name, ' ', c.last_name) as customer,
-	s.sale_date,
-	concat (e.first_name, ' ', e.last_name) as seller
-from sales as s
-join employees as e on e.employee_id = s.sales_person_id 
-join products as p on p.product_id = s.product_id 
-join customers as c on c.customer_id = s.customer_id
-where price = 0
-group by s.customer_id, customer, seller, s.sale_date
-order by s.customer_id, s.sale_date),
-   rn_tab as (
-        SELECT
-        	customer_id,
-			customer,
-			sale_date,
-			seller,
-            row_number () over (partition by customer, DATE_TRUNC('year', sale_date) order by sale_date) as rn
-        FROM tab)
+	select 
+		s.customer_id,
+		concat (c.first_name, ' ', c.last_name) as customer,
+		s.sale_date,
+		concat (e.first_name, ' ', e.last_name) as seller
+	from sales as s
+	join employees as e on e.employee_id = s.sales_person_id 
+	join products as p on p.product_id = s.product_id 
+	join customers as c on c.customer_id = s.customer_id
+	where price = 0
+	group by s.customer_id, customer, seller, s.sale_date
+	order by s.customer_id, s.sale_date),
+	rn_tab as (
+	SELECT
+        customer_id,
+		customer,
+		sale_date,
+		seller,
+		row_number () over (partition by customer, DATE_TRUNC('year', sale_date) order by sale_date) as rn
+	FROM tab)
 select 
 	customer,
 	sale_date,
