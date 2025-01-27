@@ -40,12 +40,12 @@ order by average_income ASC
 --Третий отчет содержит информацию о выручке по дням недели для каждого продавца. 
 select
 	concat (e.first_name, ' ', e.last_name) as seller, --имя и фамилия продавца
-	to_char (s.sale_date, 'Day') as day_of_week, --день недели
+	to_char (s.sale_date, 'day') as day_of_week, --день недели
 	floor (sum (p.price*s.quantity)) as income--суммарная выручка продавца за все время
 from sales as s
 join employees as e on e.employee_id = s.sales_person_id 
 join products as p on p.product_id = s.product_id 
-group by seller, extract (isodow  from s.sale_date), to_char (s.sale_date, 'Day')
+group by seller, extract (isodow  from s.sale_date), to_char (s.sale_date, 'day')
 order by extract (isodow  from s.sale_date), seller
 ;
 
